@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}My Activity — CampusQuest{% endblock %}
+{% block content %}
+<main class="dashboard-layout container">
+    <aside class="sidebar">
+        <a class="brand sidebar-brand" href="{{ url_for('home') }}"><span class="brand-mark"><span></span></span>CampusQuest</a>
+        <nav>
+            <a class="active" href="{{ url_for('dashboard') }}">⌂ <span>Dashboard</span></a>
+            <a href="{{ url_for('events') }}">▣ <span>Events</span></a>
+            <a href="{{ url_for('dashboard') }}">◌ <span>My Activity</span></a>
+            <a href="{{ url_for('dashboard') }}">◇ <span>Achievements</span></a>
+            <a href="{{ url_for('dashboard') }}">◍ <span>Profile</span></a>
+        </nav>
+        <a class="logout" href="{{ url_for('logout') }}">↪ <span>Logout</span></a>
+    </aside>
+    <section class="dashboard-main">
+        <div class="dashboard-header">
+            <div><span class="eyebrow">STUDENT DASHBOARD</span><h1>Good morning, {{ current_user.name.split()[0] }}.</h1><p>Ready for what's happening on campus?</p></div>
+            <div class="avatar large">{{ current_user.name[:1].upper() }}</div>
+        </div>
+
+        <div class="dashboard-top">
+            <div class="score-card">
+                <span class="eyebrow">YOUR CAMPUS JOURNEY</span>
+                <strong>{{ current_user.points }}</strong>
+                <span>PARTICIPATION POINTS</span>
+                <div class="score-bar"><i style="width: {{ [current_user.points % 100, 100]|min }}%"></i></div>
+                <small>{{ 100 - (current_user.points % 100) }} points to next level</small>
+            </div>
+            <div class="upcoming-card">
+                <span class="eyebrow">UPCOMING EVENTS</span>
+                {% if registrations %}
+                    {% for registration in registrations[:3] %}
+                        <a href="{{ url_for('event_detail', event_id=registration.event.id) }}" class="mini-event">
+                            <strong>{{ registration.event.title }}</strong>
+                            <span>{{ registration.event.event_date.strftime("%d %b") }} · {{ registration.event.venue }}</span>
+                        </a>
+                    {% endfor %}
+                {% else %}
+                    <div class="empty-small">No registered events yet.</div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="activity-grid">
+            <div><strong>{{ attended_count }}</strong><span>Events Attended</span></div>
+            <div><strong>{{ workshop_count }}</strong><span>Workshops</span></div>
+            <div><strong>{{ competition_count }}</strong><span>Competitions</span></div>
+        </div>
+    </section>
+</main>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Sign In — CampusQuest{% endblock %}
+{% block content %}
+<main class="auth-page">
+    <div class="auth-card">
+        <span class="eyebrow">CAMPUSQUEST</span>
+        <h1>Welcome back.</h1>
+        <p>Sign in to continue your campus journey.</p>
+        <form method="post">
+            {{ form.hidden_tag() }}
+            <label>{{ form.email.label }}{{ form.email(class="input", placeholder="you@example.com") }}</label>
+            {% for error in form.email.errors %}<small class="form-error">{{ error }}</small>{% endfor %}
+            <label>{{ form.password.label }}{{ form.password(class="input", placeholder="••••••••") }}</label>
+            {% for error in form.password.errors %}<small class="form-error">{{ error }}</small>{% endfor %}
+            {{ form.submit(class="button primary full") }}
+        </form>
+        <p class="auth-footer">New to CampusQuest? <a href="{{ url_for('register') }}">Create an account</a></p>
+    </div>
+</main>
+{% endblock %}

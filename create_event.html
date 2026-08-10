@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Create Event — CampusQuest{% endblock %}
+{% block content %}
+<main class="container page">
+    <a class="back-link" href="{{ url_for('organizer_dashboard') }}">← Organizer Dashboard</a>
+    <div class="form-page">
+        <div>
+            <span class="eyebrow">ORGANIZER</span>
+            <h1>Create an event.</h1>
+            <p>Publish a new opportunity for your campus community.</p>
+        </div>
+        <form method="post" class="create-form">
+            {{ form.hidden_tag() }}
+            <div class="form-grid">
+                <label>{{ form.title.label }}{{ form.title(class="input", placeholder="e.g. Web Development Workshop") }}</label>
+                <label>{{ form.category.label }}{{ form.category(class="input") }}</label>
+                <label>{{ form.event_date.label }}{{ form.event_date(class="input") }}</label>
+                <label>{{ form.event_time.label }}{{ form.event_time(class="input") }}</label>
+                <label>{{ form.venue.label }}{{ form.venue(class="input", placeholder="Seminar Hall B") }}</label>
+                <label>{{ form.capacity.label }}{{ form.capacity(class="input", placeholder="50") }}</label>
+                <label>{{ form.image_type.label }}{{ form.image_type(class="input") }}</label>
+                <label class="form-full">{{ form.description.label }}{{ form.description(class="input textarea", rows="6", placeholder="Tell students what this event is about...") }}</label>
+            </div>
+            <div class="form-actions"><a class="button secondary" href="{{ url_for('organizer_dashboard') }}">Cancel</a>{{ form.submit(class="button primary") }}</div>
+        </form>
+    </div>
+</main>
+{% endblock %}
