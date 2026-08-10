@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}Organizer Dashboard — CampusQuest{% endblock %}
+{% block content %}
+<main class="dashboard-layout container">
+    <aside class="sidebar">
+        <a class="brand sidebar-brand" href="{{ url_for('home') }}"><span class="brand-mark"><span></span></span>CampusQuest</a>
+        <nav>
+            <a class="active" href="{{ url_for('organizer_dashboard') }}">⌂ <span>Overview</span></a>
+            <a href="{{ url_for('organizer_dashboard') }}">▣ <span>Events</span></a>
+            <a href="{{ url_for('organizer_dashboard') }}">♙ <span>Registrations</span></a>
+            <a href="{{ url_for('organizer_dashboard') }}">◌ <span>Attendance</span></a>
+            <a href="{{ url_for('organizer_dashboard') }}">▤ <span>Feedback</span></a>
+        </nav>
+        <a class="logout" href="{{ url_for('logout') }}">↪ <span>Logout</span></a>
+    </aside>
+    <section class="dashboard-main">
+        <div class="dashboard-header">
+            <div><span class="eyebrow">ORGANIZER</span><h1>Overview</h1><p>Welcome back. Here's what's happening.</p></div>
+            <a class="button primary" href="{{ url_for('create_event') }}">+ Create Event</a>
+        </div>
+
+        <div class="metric-grid">
+            <div><strong>{{ own_events|length }}</strong><span>Total Events</span></div>
+            <div><strong>{{ total_registrations }}</strong><span>Total Registrations</span></div>
+            <div><strong>0%</strong><span>Attendance Rate</span></div>
+            <div><strong>{{ own_events|length }}</strong><span>Upcoming Events</span></div>
+        </div>
+
+        <div class="organizer-panels">
+            <div class="panel">
+                <div class="panel-heading"><h2>Event Overview</h2></div>
+                {% if own_events %}
+                    {% for event in own_events %}
+                        <div class="event-progress">
+                            <div><span>{{ event.title }}</span><strong>{{ event.registrations|length }}/{{ event.capacity }}</strong></div>
+                            <div class="progress"><i style="width: {{ ((event.registrations|length / event.capacity) * 100)|round(0) }}%"></i></div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="empty-state compact"><div class="empty-icon">⌁</div><h3>No events yet</h3><p>Create your first event to see insights here.</p><a class="button secondary" href="{{ url_for('create_event') }}">Create Event</a></div>
+                {% endif %}
+            </div>
+            <div class="panel">
+                <div class="panel-heading"><h2>Recent Events</h2></div>
+                {% if own_events %}
+                    {% for event in own_events[:5] %}
+                        <a class="recent-row" href="{{ url_for('event_detail', event_id=event.id) }}"><span>{{ event.title }}</span><small>{{ event.event_date.strftime("%d %b %Y") }}</small><b>→</b></a>
+                    {% endfor %}
+                {% else %}
+                    <div class="empty-state compact"><div class="empty-icon">▣</div><h3>No events yet</h3><p>Your created events will show up here.</p></div>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+</main>
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}Explore Events — CampusQuest{% endblock %}
+{% block content %}
+<main class="container page">
+    <section class="page-heading">
+        <span class="eyebrow">CAMPUS EVENTS</span>
+        <h1>Explore events</h1>
+        <p>Find something happening around campus.</p>
+    </section>
+
+    <form class="filter-bar" method="get">
+        <div class="search-field"><span>⌕</span><input name="q" value="{{ query }}" placeholder="Search events..."></div>
+        <select name="category">
+            <option value="">All Categories</option>
+            {% for c in ["Technical","Cultural","Sports","Workshop","Competition","Academic"] %}
+                <option value="{{ c }}" {% if category == c %}selected{% endif %}>{{ c }}</option>
+            {% endfor %}
+        </select>
+        <button class="button primary" type="submit">Search</button>
+    </form>
+
+    {% if events %}
+        <div class="event-list">
+            {% for event in events %}
+                <a class="event-row" href="{{ url_for('event_detail', event_id=event.id) }}">
+                    <div class="row-date"><strong>{{ event.event_date.strftime("%d") }}</strong><span>{{ event.event_date.strftime("%b") }}</span></div>
+                    <div class="row-art {{ event.image_type }}"><img src="{{ url_for('static', filename='img/' + event.image_type + '.svg') }}" alt=""></div>
+                    <div class="row-content">
+                        <span class="category">{{ event.category }}</span>
+                        <h3>{{ event.title }}</h3>
+                        <p>{{ event.description|truncate(100) }}</p>
+                        <small>{{ event.venue }} · {{ event.event_time.strftime("%I:%M %p") }}</small>
+                    </div>
+                    <div class="row-capacity">{{ event.registrations|length }}/{{ event.capacity }}<small>seats</small></div>
+                    <span class="row-arrow">→</span>
+                </a>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty-state large">
+            <div class="empty-icon">⌁</div>
+            <h3>No events found</h3>
+            <p>There are no matching events right now.</p>
+            <a class="button secondary" href="{{ url_for('events') }}">Clear filters</a>
+        </div>
+    {% endif %}
+</main>
+{% endblock %}
