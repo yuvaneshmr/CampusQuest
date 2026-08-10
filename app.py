@@ -12,7 +12,7 @@ from wtforms.validators import DataRequired, Email, EqualTo, Length, NumberRange
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "campusquest-dev-secret")
-database_url = os.environ.get("DATABASE_URL", "sqlite:///campusquest.db")
+database_url = os.environ.get("DATABASE_URL", "sqlite:////tmp/campusquest.db")
 if database_url.startswith("postgres://"):
     database_url = database_url.replace("postgres://", "postgresql://", 1)
 app.config["SQLALCHEMY_DATABASE_URI"] = database_url
